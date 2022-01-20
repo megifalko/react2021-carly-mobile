@@ -58,7 +58,7 @@ function LoginPage({navigation}) {
                 .then(response => {
                     console.log(response.jwttoken)
                     saveToken(response.jwttoken)
-                        .then(() => navigation.navigate('CarListScreen'))
+                        .then(() => navigation.navigate('Home'))
                 })
                 .catch(err => console.error(err));
         }}
