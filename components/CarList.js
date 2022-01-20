@@ -9,26 +9,15 @@ import {
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from 'async-storage'
+import { renderListItem } from './CarListItem'
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const Item = ({ title }) => (
-    <View style={styles.item}>
-      <Text>{title}</Text>
-    </View>
-  );
-
   const onPress = (item) => {
     navigation.navigate("CarDetailsScreen", { item });
   };
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => onPress(item)}>
-      <Item title={item.brand + " " + item.model} />
-    </TouchableOpacity>
-  );
 
   const onRefresh = useCallback(async () => {
     setCars([]);
@@ -57,12 +46,12 @@ function CarList({ navigation }) {
 
     getCars(token)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         setCars(response.data);
       })
       .catch((err) => console.error(err))
       .finally(() => {
-        console.log("yay!");
+        //console.log("yay!");
         setIsLoading(false);
       });
   };
@@ -80,7 +69,7 @@ function CarList({ navigation }) {
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
         data={cars}
-        renderItem={renderItem}
+        renderItem={({item}) => renderListItem({item, onPress})}
         keyExtractor={(item) => item.id}
       />
     </View>
