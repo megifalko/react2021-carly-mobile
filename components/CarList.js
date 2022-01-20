@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
+import AsyncStorage from 'async-storage'
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
