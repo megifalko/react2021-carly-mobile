@@ -61,6 +61,11 @@ export default function App() {
         </>
         ) : (
         <>
+        <Stack.Screen
+            name="LoginPageScreen"
+            component={LoginPage}
+            options={{ title: "LoginPageScreen" }}
+          />
           <Stack.Screen
             name="Home"
             component={Home}
