@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CarList } from './components/CarList';
 import { CarDetails } from './components/CarDetails';
+import { LoginPage } from './components/LoginPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,6 +12,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="LoginPageScreen" component={LoginPage} options={{ title: 'LoginPageScreen' }} />
         <Stack.Screen name="CarListScreen" component={CarList} options={{ title: 'CarListScreen' }} />
         <Stack.Screen name="CarDetailsScreen" component={CarDetails} options={{ title: 'CarDetailsScreen' }} />
       </Stack.Navigator>

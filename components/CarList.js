@@ -1,13 +1,15 @@
 import { Text, View, Button, StyleSheet } from 'react-native';
 import {useEffect} from 'react'
+import AsyncStorage from 'async-storage'
 
 function CarList({navigation}) {
-  const test = async () => {
+  const getCars = async (token) => {
     return fetch(`http:/10.0.2.2:8080/cars`,
         {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
             }
         }).then(response => {
         if (response.ok) {
@@ -19,12 +21,14 @@ function CarList({navigation}) {
   }
 
   useEffect(async () => {
-    test()
+    const token = await AsyncStorage.getItem('@Carly:apiToken');
+
+    getCars(token)
       .then((data) => {
         console.log(data)
       })
-      .catch(err => console.error(err))
-      .finally(() => console.log('yay!'));
+      .catch(err => console.log(err.status))
+      .finally(() => console.log('yay xd!'));
   }, []);
 
   return (
