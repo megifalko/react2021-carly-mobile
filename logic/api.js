@@ -32,8 +32,8 @@ export const deleteBooking = async (token, id) => {
     });
 };
 
-export const getCars = async (token, page) => {
-    return fetch(BASE_URL + `/cars?page=${page}&per_page=5`, {
+export const getCars = async (token, page, searchText) => {
+    return fetch(BASE_URL + `/cars?page=${page}&per_page=5` + (searchText != undefined ? `&search_text=${searchText}` : ''), {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

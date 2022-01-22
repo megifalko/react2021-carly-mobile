@@ -1,11 +1,10 @@
 import {
   Text,
   View,
-  Button,
+  TextInput,
   StyleSheet,
   FlatList,
   RefreshControl,
-  TouchableOpacity,
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from 'async-storage'
@@ -17,6 +16,7 @@ function CarList({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [authToken, setAuthToken] = useState('');
   const [page, setPage] = useState(0);
+  const [searchText, setSearchText] = useState('');
 
   const onPress = (item) => {
     navigation.navigate("CarDetailsScreen", { item });
@@ -25,12 +25,12 @@ function CarList({ navigation }) {
   const onRefresh = useCallback(async () => {
     setCars([]);
     setPage(0);
-    loadData(authToken);
+    loadData(authToken, searchText);
   }, [isLoading]);
 
-  const loadData = async (token) => {
+  const loadData = async (token, searchText) => {
     setIsLoading(true);
-    getCars(token, 0)
+    getCars(token, 0, searchText != undefined && searchText.length >= 3 ? searchText : undefined)
       .then((response) => {
         //console.log(response);
         setCars(response.data);
@@ -42,9 +42,9 @@ function CarList({ navigation }) {
       });
   };
 
-  const appendData = async (token) => {
+  const appendData = async (token, searchText) => {
     setIsLoading(true);
-    getCars(token, page+1)
+    getCars(token, page+1, searchText != undefined && searchText.length >= 3 ? searchText : undefined)
       .then((response) => {
         //console.log(response);
         setCars([...cars, ...response.data]);
@@ -63,8 +63,19 @@ function CarList({ navigation }) {
     loadData(token);
   }, []);
 
+  const onSearchInput = (value) => {
+    setSearchText(value);
+    if(value.length > 3 || value === '') onRefresh();
+  };
+
   return (
     <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        onChangeText={onSearchInput}
+        value={searchText}
+        placeholder="Search for a car"
+      />
       <Text style={styles.content}>Car list:</Text>
       <FlatList
         style={{ flex: 1 }}
@@ -75,7 +86,7 @@ function CarList({ navigation }) {
         renderItem={({item}) => renderListItem({item, onPress})}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0}
-        onEndReached={() => appendData(authToken)}
+        onEndReached={() => appendData(authToken, searchText)}
       />
     </View>
   );
@@ -85,6 +96,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "flex-start",
+    alignItems: "center"
   },
   content: {
     margin: 20,
@@ -103,6 +115,10 @@ const styles = StyleSheet.create({
     width: "90%",
     flexDirection: "row",
     borderRadius: 5,
+  },
+  input: {
+    width: 200,
+    borderWidth: 1
   }
 });
 
