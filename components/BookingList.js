@@ -71,7 +71,7 @@ function BookingList({ navigation }) {
 
   const loadData = async (token) => {
     setIsLoading(true);
-    getBookings(token)
+    getBookings(token, 0)
       .then((response) => {
         //console.log(response);
         setBookings(response.data);
@@ -99,17 +99,15 @@ function BookingList({ navigation }) {
   };
 
   const deleteSelectedBooking = async (id) => {
-    const token = await AsyncStorage.getItem("@Carly:apiToken");
     setIsLoading(true);
-    deleteBooking(token, id)
+    deleteBooking(authToken, id)
       .then((response) => {
         console.log(JSON.stringify(response));
       })
       .catch((err) => console.error(err))
       .finally(() => {
         console.log("yay!");
-        loadData();
-        setIsLoading(false);
+        loadData(authToken);
       });
   };
 
