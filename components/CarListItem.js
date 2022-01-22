@@ -1,32 +1,17 @@
 import { Text, View, StyleSheet, TouchableOpacity, Image} from "react-native";
 import { useEffect, useState } from 'react';
 import AsyncStorage from 'async-storage'
+import { getImage, BASE_URL } from '../logic/api'
   
 function CarListItem({ item }) {
     const [imgSource, setImgSource] = useState("https://placekitten.com/300/200");
 
-    const getImg = async (carId, authToken) => {
-        return fetch(`http://10.0.2.2:8080/cars/${carId}/imageIds`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": "Bearer " + authToken
-            },
-          }).then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              throw response;
-            }
-          });
-    }
-
     useEffect(async() => {
         const token = await AsyncStorage.getItem('@Carly:apiToken');
-        getImg(item.id, token)
+        getImage(item.id, token)
             .then(data => {
                 if(data.length > 0) {
-                    setImgSource('http://10.0.2.2:8080/images/' + data[0]);
+                    setImgSource(BASE_URL + '/images/' + data[0]);
                 }
             })
             .catch(err => console.log(err));

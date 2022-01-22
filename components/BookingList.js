@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from "async-storage";
+import { getBookings, deleteBooking } from '../logic/api'
 
 function BookingList({ navigation }) {
   const [bookings, setBookings] = useState([]);
@@ -37,37 +38,7 @@ function BookingList({ navigation }) {
     loadData(authToken);
   }, [isLoading]);
 
-  const getBookings = async (token, page) => {
-    return fetch(`http:/10.0.2.2:8080/bookings?active=true&page=${page}&per_page=5`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw response;
-      }
-    });
-  };
-
-  const deleteBooking = async (token, id) => {
-    return fetch(`http:/10.0.2.2:8080/bookings/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token,
-      },
-    }).then((response) => {
-      if (response.ok) {
-        return response;
-      } else {
-        throw response;
-      }
-    });
-  };
+  
 
   const loadData = async (token) => {
     setIsLoading(true);

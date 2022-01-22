@@ -1,135 +1,65 @@
-import {Car} from "../objects/Car";
+export const BASE_URL = 'http://10.0.2.2:8080';
 
-const BASE_URL = 'http://localhost:8080';
-
-export const getCars = async (securityToken) => {
-
-    return fetch(`${BASE_URL}/cars`,
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            }
-        }).then(response => {
+export const getBookings = async (token, page) => {
+    return fetch(BASE_URL + `/bookings?active=true&page=${page}&per_page=5`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+        },
+    }).then((response) => {
         if (response.ok) {
-            return response.json()
+            return response.json();
         } else {
             throw response;
         }
-    })
-}
+    });
+};
 
-export const getCarsWithParams = async (page, carsPerPage, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars?page=${page}&per_page=${carsPerPage}`,
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            }
-        }).then(response => {
+export const deleteBooking = async (token, id) => {
+    return fetch(BASE_URL + `/bookings/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token,
+        },
+    }).then((response) => {
         if (response.ok) {
-            return response.json()
+            return response;
         } else {
             throw response;
         }
-    })
-}
+    });
+};
 
-export const getCar = async (id, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars/${id}`,
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            }
-        }).then(response => {
+export const getCars = async (token, page) => {
+    return fetch(BASE_URL + `/cars?page=${page}&per_page=5`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+    }).then((response) => {
         if (response.ok) {
-            return response.json()
+            return response.json();
         } else {
             throw response;
         }
-    })
-}
+    });
+};
 
-export const addCar = async (car, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars/${car.id}`,
-        {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            },
-            body: JSON.stringify([car])
-        }).then(response => {
+export const getImage = async (carId, authToken) => {
+    return fetch(BASE_URL + `/cars/${carId}/imageIds`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + authToken
+        },
+    }).then((response) => {
         if (response.ok) {
-            return response.json()
+            return response.json();
         } else {
             throw response;
         }
-    })
-}
-
-export const updateCar = async (car, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars/${car.id}`,
-        {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            },
-            body: JSON.stringify(car)
-        }).then(response => {
-        if (response.ok) {
-            return response.json()
-        } else {
-            throw response;
-        }
-    })
-}
-
-export const deleteCar = async (id, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars/${id}`,
-        {
-            method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            },
-        }).then(response => {
-        if (response.ok) {
-            return response.json()
-        } else {
-            throw response;
-        }
-    })
-}
-
-export const getImagesIds = async (carId, securityToken) => {
-
-    return fetch(`${BASE_URL}/cars/${carId}/imageIds`,
-        {
-            method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                'security-header': securityToken
-            },
-        }).then(response => {
-        if (response.ok) {
-            return response.json()
-        } else {
-            throw response;
-        }
-    })
-}
-
-export const imageUri = (imageId) => {
-    return `${BASE_URL}/images/${imageId}`
+    });
 }

@@ -10,6 +10,7 @@ import {
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from 'async-storage'
 import { renderListItem } from './CarListItem'
+import { getCars } from '../logic/api'
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
@@ -26,22 +27,6 @@ function CarList({ navigation }) {
     setPage(0);
     loadData(authToken);
   }, [isLoading]);
-
-  const getCars = async (token, page) => {
-    return fetch(`http:/10.0.2.2:8080/cars?page=${page}&per_page=5`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-    }).then((response) => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw response;
-      }
-    });
-  };
 
   const loadData = async (token) => {
     setIsLoading(true);
