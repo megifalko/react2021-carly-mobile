@@ -1,25 +1,11 @@
-import { Text, View, Button, StyleSheet, TextInput} from 'react-native';
+import { View, TouchableOpacity, Text, TextInput} from 'react-native';
 import {useEffect, useState} from 'react'
 import AsyncStorage from 'async-storage'
+import styles from '../styles/LoginPage.module.css'
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { login } from '../logic/api'
 
 function LoginPage({navigation}) {
-  const login = async (username, password) => {
-    return fetch(`http:/10.0.2.2:8080/authenticate`,
-        {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({username: username, password: password})
-        }).then(response => {
-        if (response.ok) {
-            return response.json()
-        } else {
-            throw response;
-        }
-    })
-  }
-
   const saveToken = async (token) => {
         return AsyncStorage.setItem(
           '@Carly:apiToken',
@@ -27,32 +13,27 @@ function LoginPage({navigation}) {
         );
   }
 
-  /*useEffect(async () => {
-    test()
-      .then((data) => {
-        console.log(data)
-      })
-      .catch(err => console.log(err.status))
-      .finally(() => console.log('yay xd!'));
-  }, []);*/
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   return (
     <View style={styles.container}>
+      <Ionicons size={60} name="car"/>
+      <Text style={styles.title}>Carly</Text>
       <TextInput
         style={styles.input}
         onChangeText={setUsername}
         value={username}
+        placeholder="username"
       />
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
         value={password}
+        placeholder="password"
       />
-      <Button
-        title="Login"
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => {
             login(username, password)
                 .then(response => {
@@ -62,26 +43,12 @@ function LoginPage({navigation}) {
                 })
                 .catch(err => console.error(err));
         }}
-      />
+      >
+        <Text style={styles['login-text']}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  content: {
-    margin: 20,
-    fontSize: 18,
-  },
-  input: {
-      width: 100,
-      borderWidth: 1
-  }
-});
 
 export {
   LoginPage

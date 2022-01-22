@@ -63,3 +63,20 @@ export const getImage = async (carId, authToken) => {
         }
     });
 }
+
+export const login = async (username, password) => {
+    return fetch(BASE_URL + `/authenticate`,
+        {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({username: username, password: password})
+        }).then(response => {
+        if (response.ok) {
+            return response.json()
+        } else {
+            throw response;
+        }
+    })
+  }

@@ -11,7 +11,6 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const isLoggedIn = true;
 
 function Home() {
   return (
@@ -51,33 +50,26 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {!isLoggedIn ? (
-        <>
-          <Stack.Screen
-            name="LoginPageScreen"
-            component={LoginPage}
-            options={{ title: "Login" }}
-          />
-        </>
-        ) : (
-        <>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="CarListScreen"
-            component={CarList}
-            options={{ title: "Cars" }}
-          />
-          <Stack.Screen
-            name="CarDetailsScreen"
-            component={CarDetails}
-            options={{ title: "Car details" }}
-          />
-        </>
-        )}
+        <Stack.Screen
+          name="LoginPageScreen"
+          component={LoginPage}
+          options={{ title: "Login" }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CarListScreen"
+          component={CarList}
+          options={{ title: "Cars" }}
+        />
+        <Stack.Screen
+          name="CarDetailsScreen"
+          component={CarDetails}
+          options={{ title: "Car details" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
