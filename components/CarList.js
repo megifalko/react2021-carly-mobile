@@ -10,6 +10,7 @@ import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from 'async-storage'
 import { renderListItem } from './CarListItem'
 import { getCars } from '../logic/api'
+import styles from '../styles/CarList.module.css'
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
@@ -91,35 +92,6 @@ function CarList({ navigation }) {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "flex-start",
-    alignItems: "center"
-  },
-  content: {
-    margin: 20,
-    fontSize: 18,
-    alignSelf: "center",
-  },
-  item: {
-    flex: 1,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    height: 60,
-    backgroundColor: "#AEF359",
-    width: "90%",
-    flexDirection: "row",
-    borderRadius: 5,
-  },
-  input: {
-    width: 200,
-    borderWidth: 1
-  }
-});
+
 
 export { CarList };
