@@ -20,7 +20,7 @@ function Home() {
         name="CarListScreen"
         component={CarList}
         options={{
-          title: "CarListScreen",
+          title: "Cars",
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = "car-sharp";
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -34,7 +34,7 @@ function Home() {
         name="BookingListScreen"
         component={BookingList}
         options={{
-          title: "BookingListScreen",
+          title: "Bookings",
           tabBarIcon: ({ focused, color, size }) => {
             let iconName = "calendar-sharp";
             return <Ionicons name={iconName} size={size} color={color} />;
@@ -56,16 +56,11 @@ export default function App() {
           <Stack.Screen
             name="LoginPageScreen"
             component={LoginPage}
-            options={{ title: "LoginPageScreen" }}
+            options={{ title: "Login" }}
           />
         </>
         ) : (
         <>
-        <Stack.Screen
-            name="LoginPageScreen"
-            component={LoginPage}
-            options={{ title: "LoginPageScreen" }}
-          />
           <Stack.Screen
             name="Home"
             component={Home}
@@ -74,12 +69,12 @@ export default function App() {
           <Stack.Screen
             name="CarListScreen"
             component={CarList}
-            options={{ title: "CarListScreen" }}
+            options={{ title: "Cars" }}
           />
           <Stack.Screen
             name="CarDetailsScreen"
             component={CarDetails}
-            options={{ title: "CarDetailsScreen" }}
+            options={{ title: "Car details" }}
           />
         </>
         )}
