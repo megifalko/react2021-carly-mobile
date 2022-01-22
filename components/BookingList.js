@@ -16,12 +16,18 @@ function BookingList({ navigation }) {
   const [authToken, setAuthToken] = useState('');
   const [page, setPage] = useState(0);
 
+  const onDelete = (id) => {
+    console.log(id);
+    deleteSelectedBooking(id);
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.content}>First name: {item.customerFirstName}</Text>
       <Text style={styles.content}>Last name: {item.customerLastName}</Text>
       <Text style={styles.content}>Start date: {item.startDate}</Text>
       <Text style={styles.content}>End date: {item.endDate}</Text>
+      <Button title="Delete" onPress={() => onDelete(item.id)} />
     </View>
   );
 
@@ -32,7 +38,7 @@ function BookingList({ navigation }) {
   }, [isLoading]);
 
   const getBookings = async (token, page) => {
-    return fetch(`http:/10.0.2.2:8080/bookings?page=${page}&per_page=5`, {
+    return fetch(`http:/10.0.2.2:8080/bookings?active=true&page=${page}&per_page=5`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -47,9 +53,25 @@ function BookingList({ navigation }) {
     });
   };
 
+  const deleteBooking = async (token, id) => {
+    return fetch(`http:/10.0.2.2:8080/bookings/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response;
+      } else {
+        throw response;
+      }
+    });
+  };
+
   const loadData = async (token) => {
     setIsLoading(true);
-    getBookings(token, 0)
+    getBookings(token)
       .then((response) => {
         //console.log(response);
         setBookings(response.data);
@@ -74,6 +96,21 @@ function BookingList({ navigation }) {
         setIsLoading(false);
       });
     setPage(page+1)
+  };
+
+  const deleteSelectedBooking = async (id) => {
+    const token = await AsyncStorage.getItem("@Carly:apiToken");
+    setIsLoading(true);
+    deleteBooking(token, id)
+      .then((response) => {
+        console.log(JSON.stringify(response));
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        console.log("yay!");
+        loadData();
+        setIsLoading(false);
+      });
   };
 
   useEffect(async () => {
@@ -117,7 +154,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 10,
     padding: 10,
-    height: 260,
+    height: 300,
     backgroundColor: "#AEF359",
     width: "90%",
     borderRadius: 5,
