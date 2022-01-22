@@ -11,6 +11,7 @@ import AsyncStorage from 'async-storage'
 import { renderListItem } from './CarListItem'
 import { getCars } from '../logic/api'
 import styles from '../styles/CarList.module.css'
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
@@ -77,9 +78,10 @@ function CarList({ navigation }) {
         value={searchText}
         placeholder="Search for a car"
       />
-      <Text style={styles.content}>Car list:</Text>
+      <Ionicons name="search" style={styles['search-icon']}/>
       <FlatList
-        style={{ flex: 1 }}
+        contentContainerStyle={styles.list}
+        style={{flex: 1, width: '100%'}}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }

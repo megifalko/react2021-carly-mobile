@@ -1,0 +1,25 @@
+
+
+.item {
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 30px;
+    width: 350px;
+}
+
+.brand {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.model {
+    color: #777;
+}
+
+.image {
+    height: 150px;
+    margin-top: 20px;
+}
