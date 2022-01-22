@@ -9,7 +9,7 @@ import {
 import { useEffect, useState } from "react";
 import AsyncStorage from "async-storage";
 import { getImage, BASE_URL } from "../logic/api";
-import Gallery from "react-native-image-gallery";
+import styles from "../styles/CarDetails.module.css";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 function CarDetails({ route, navigation }) {
@@ -41,48 +41,54 @@ function CarDetails({ route, navigation }) {
     console.log({ id: "image", image: image });
     return { id: "image", image: image };
   });
-  const { width } = Dimensions.get("window");
+  const { width, height } = Dimensions.get("window");
   console.log(imageList);
   return (
     <View style={styles.container}>
-      <Carousel
+      <View style={{ flex: 1 / 4, flexDirection: "row" }}>
+        <View style={{ flex: 1 / 2 }}>
+          <Text>Brand</Text>
+          <Text>{item.brand}</Text>
+        </View>
+        <View style={{ flex: 1 / 2 }}>
+        </View>
+      </View>
+      <View style={{ flex: 1 / 4, flexDirection: "row" }}>
+        <View style={{ flex: 1 / 2 }}>
+          <Text>Model</Text>
+          <Text>{item.model}</Text>
+        </View>
+        <View style={{ flex: 1 / 2, alignItems: "flex-end"}}>
+          <Text>Year</Text>
+          <Text>{item.year}</Text>
+        </View>
+      </View>
+      <View style={{ flex: 1, marginTop: 20, marginBottom: 30 }}>
+        <Carousel
+          style={styles.carousel}
           data={imageList}
           sliderWidth={width}
           itemWidth={width}
           renderItem={({ item, index }) => (
             <Image
               key={index}
-              style={{ width: '100%', height: '100%' }}
-              resizeMode='contain'
+              style={styles.image}
+              resizeMode="contain"
               source={{ uri: item.image }}
             />
           )}
         />
-      <Text style={styles.content}>Brand: {item.brand}</Text>
-      <Text style={styles.content}>Model: {item.model}</Text>
-      <Text style={styles.content}>Engine: {item.engine}</Text>
-      <Text style={styles.content}>Location: {item.location}</Text>
-      <Text style={styles.content}>Year: {item.year}</Text>
-      <Text style={styles.content}>Price: {item.price}</Text>
+      </View>
+      <View style={{ flex: 1/2, flexDirection: "row" }}>
+        <View style={{ flex: 1 / 2 }}>
+        </View>
+        <View style={{ flex: 1 / 2, alignItems: "flex-end"}}>
+          <Text>Price:     ${item.price}</Text>
+          <Text>/day</Text>
+        </View>
+      </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: 200,
-    height: 100,
-  },
-  content: {
-    margin: 20,
-    fontSize: 18,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
-
+//alignItems: "flex-end"
 export { CarDetails };
