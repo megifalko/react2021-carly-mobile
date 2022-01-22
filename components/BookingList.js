@@ -14,12 +14,18 @@ function BookingList({ navigation }) {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const onDelete = (id) => {
+    console.log(id);
+    deleteSelectedBooking(id);
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Text style={styles.content}>First name: {item.customerFirstName}</Text>
       <Text style={styles.content}>Last name: {item.customerLastName}</Text>
       <Text style={styles.content}>Start date: {item.startDate}</Text>
       <Text style={styles.content}>End date: {item.endDate}</Text>
+      <Button title="Delete" onPress={() => onDelete(item.id)} />
     </View>
   );
 
@@ -30,7 +36,7 @@ function BookingList({ navigation }) {
   }, [isLoading]);
 
   const getBookings = async (token) => {
-    return fetch(`http:/10.0.2.2:8080/bookings`, {
+    return fetch(`http:/10.0.2.2:8080/bookings?active=true`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,6 +45,22 @@ function BookingList({ navigation }) {
     }).then((response) => {
       if (response.ok) {
         return response.json();
+      } else {
+        throw response;
+      }
+    });
+  };
+
+  const deleteBooking = async (token, id) => {
+    return fetch(`http:/10.0.2.2:8080/bookings/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+      },
+    }).then((response) => {
+      if (response.ok) {
+        return response;
       } else {
         throw response;
       }
@@ -56,6 +78,21 @@ function BookingList({ navigation }) {
       .catch((err) => console.error(err))
       .finally(() => {
         console.log("yay!");
+        setIsLoading(false);
+      });
+  };
+
+  const deleteSelectedBooking = async (id) => {
+    const token = await AsyncStorage.getItem("@Carly:apiToken");
+    setIsLoading(true);
+    deleteBooking(token, id)
+      .then((response) => {
+        console.log(JSON.stringify(response));
+      })
+      .catch((err) => console.error(err))
+      .finally(() => {
+        console.log("yay!");
+        loadData();
         setIsLoading(false);
       });
   };
@@ -97,7 +134,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 10,
     padding: 10,
-    height: 260,
+    height: 300,
     backgroundColor: "#AEF359",
     width: "90%",
     borderRadius: 5,
