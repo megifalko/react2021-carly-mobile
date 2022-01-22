@@ -13,6 +13,8 @@ import AsyncStorage from "async-storage";
 function BookingList({ navigation }) {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [authToken, setAuthToken] = useState('');
+  const [page, setPage] = useState(0);
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
@@ -24,13 +26,13 @@ function BookingList({ navigation }) {
   );
 
   const onRefresh = useCallback(async () => {
+    setPage(0);
     setBookings([]);
-    setIsLoading(true);
-    loadData();
+    loadData(authToken);
   }, [isLoading]);
 
-  const getBookings = async (token) => {
-    return fetch(`http:/10.0.2.2:8080/bookings`, {
+  const getBookings = async (token, page) => {
+    return fetch(`http:/10.0.2.2:8080/bookings?page=${page}&per_page=5`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -45,23 +47,39 @@ function BookingList({ navigation }) {
     });
   };
 
-  const loadData = async () => {
-    const token = await AsyncStorage.getItem("@Carly:apiToken");
-
-    getBookings(token)
+  const loadData = async (token) => {
+    setIsLoading(true);
+    getBookings(token, 0)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         setBookings(response.data);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(JSON.stringify(err)))
       .finally(() => {
-        console.log("yay!");
+        //console.log("yay!");
         setIsLoading(false);
       });
   };
 
+  const appendData = async (token) => {
+    setIsLoading(true);
+    getBookings(token, page+1)
+      .then((response) => {
+        //console.log(response);
+        setBookings([...bookings, ...response.data]);
+      })
+      .catch((err) => console.error(JSON.stringify(err)))
+      .finally(() => {
+        //console.log("yay!");
+        setIsLoading(false);
+      });
+    setPage(page+1)
+  };
+
   useEffect(async () => {
-    loadData();
+    const token = await AsyncStorage.getItem("@Carly:apiToken");
+    setAuthToken(token);
+    loadData(token);
   }, []);
 
   return (
@@ -75,6 +93,8 @@ function BookingList({ navigation }) {
         data={bookings}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0}
+        onEndReached={() => appendData(authToken)}
       />
     </View>
   );

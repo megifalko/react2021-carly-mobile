@@ -14,6 +14,8 @@ import { renderListItem } from './CarListItem'
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [authToken, setAuthToken] = useState('');
+  const [page, setPage] = useState(0);
 
   const onPress = (item) => {
     navigation.navigate("CarDetailsScreen", { item });
@@ -21,12 +23,12 @@ function CarList({ navigation }) {
 
   const onRefresh = useCallback(async () => {
     setCars([]);
-    setIsLoading(true);
-    loadData();
+    setPage(0);
+    loadData(authToken);
   }, [isLoading]);
 
-  const getCars = async (token) => {
-    return fetch(`http:/10.0.2.2:8080/cars`, {
+  const getCars = async (token, page) => {
+    return fetch(`http:/10.0.2.2:8080/cars?page=${page}&per_page=5`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -41,23 +43,39 @@ function CarList({ navigation }) {
     });
   };
 
-  const loadData = async () => {
-    const token = await AsyncStorage.getItem('@Carly:apiToken');
-
-    getCars(token)
+  const loadData = async (token) => {
+    setIsLoading(true);
+    getCars(token, 0)
       .then((response) => {
         //console.log(response);
         setCars(response.data);
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error(JSON.stringify(err)))
       .finally(() => {
         //console.log("yay!");
         setIsLoading(false);
       });
   };
 
+  const appendData = async (token) => {
+    setIsLoading(true);
+    getCars(token, page+1)
+      .then((response) => {
+        //console.log(response);
+        setCars([...cars, ...response.data]);
+      })
+      .catch((err) => console.error(JSON.stringify(err)))
+      .finally(() => {
+        //console.log("yay!");
+        setIsLoading(false);
+      });
+    setPage(page+1);
+  };
+
   useEffect(async () => {
-    loadData();
+    const token = await AsyncStorage.getItem('@Carly:apiToken');
+    setAuthToken(token);
+    loadData(token);
   }, []);
 
   return (
@@ -71,6 +89,8 @@ function CarList({ navigation }) {
         data={cars}
         renderItem={({item}) => renderListItem({item, onPress})}
         keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0}
+        onEndReached={() => appendData(authToken)}
       />
     </View>
   );

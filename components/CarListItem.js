@@ -34,7 +34,7 @@ function CarListItem({ item }) {
 
     return (
         <View style={styles.item}>
-            <Text>{item.brand + " " + item.model}</Text>
+            <Text>{item.id + " " + item.brand + " " + item.model}</Text>
             <Image
                 style={styles.image}
                 source={{uri: imgSource}}
