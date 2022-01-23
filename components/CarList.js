@@ -7,18 +7,18 @@ import {
   RefreshControl,
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
-import AsyncStorage from 'async-storage'
-import { renderListItem } from './CarListItem'
-import { getCars } from '../logic/api'
-import styles from '../styles/CarList.module.css'
+import AsyncStorage from "async-storage";
+import { renderListItem } from "./CarListItem";
+import { getCars } from "../logic/api";
+import styles from "../styles/CarList.module.css";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 function CarList({ navigation }) {
   const [cars, setCars] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [authToken, setAuthToken] = useState('');
+  const [authToken, setAuthToken] = useState("");
   const [page, setPage] = useState(0);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   const onPress = (item) => {
     navigation.navigate("CarDetailsScreen", { item });
@@ -32,7 +32,11 @@ function CarList({ navigation }) {
 
   const loadData = async (token, searchText) => {
     setIsLoading(true);
-    getCars(token, 0, searchText != undefined && searchText.length >= 3 ? searchText : undefined)
+    getCars(
+      token,
+      0,
+      searchText != undefined && searchText.length >= 3 ? searchText : undefined
+    )
       .then((response) => {
         //console.log(response);
         setCars(response.data);
@@ -46,7 +50,11 @@ function CarList({ navigation }) {
 
   const appendData = async (token, searchText) => {
     setIsLoading(true);
-    getCars(token, page+1, searchText != undefined && searchText.length >= 3 ? searchText : undefined)
+    getCars(
+      token,
+      page + 1,
+      searchText != undefined && searchText.length >= 3 ? searchText : undefined
+    )
       .then((response) => {
         //console.log(response);
         setCars([...cars, ...response.data]);
@@ -56,18 +64,18 @@ function CarList({ navigation }) {
         //console.log("yay!");
         setIsLoading(false);
       });
-    setPage(page+1);
+    setPage(page + 1);
   };
 
   useEffect(async () => {
-    const token = await AsyncStorage.getItem('@Carly:apiToken');
+    const token = await AsyncStorage.getItem("@Carly:apiToken");
     setAuthToken(token);
     loadData(token);
   }, []);
 
   const onSearchInput = (value) => {
     setSearchText(value);
-    if(value.length > 3 || value === '') onRefresh();
+    if (value.length > 3 || value === "") onRefresh();
   };
 
   return (
@@ -78,15 +86,15 @@ function CarList({ navigation }) {
         value={searchText}
         placeholder="Search for a car"
       />
-      <Ionicons name="search" style={styles['search-icon']}/>
+      <Ionicons name="search" style={styles["search-icon"]} />
       <FlatList
         contentContainerStyle={styles.list}
-        style={{flex: 1, width: '100%'}}
+        style={{ flex: 1, width: "100%" }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
         data={cars}
-        renderItem={({item}) => renderListItem({item, onPress})}
+        renderItem={({ item }) => renderListItem({ item, onPress })}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0}
         onEndReached={() => appendData(authToken, searchText)}
@@ -94,6 +102,5 @@ function CarList({ navigation }) {
     </View>
   );
 }
-
 
 export { CarList };

@@ -1,0 +1,46 @@
+.content {
+  font-size: 20px;
+  font-weight: 400;
+  color: #777;
+  margin-bottom: -5px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.number {
+  font-size: 36px;
+  font-weight: 400;
+  color: #1E5128;
+}
+
+.year {
+  font-size: 36px;
+  font-weight: 400;
+  color: #1E5128;
+}
+
+.header {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.container {
+  flex: 1;
+  background-color: #fff;
+  padding: 30px;
+  margin: 15px;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.image {
+  width: 100%;
+  height: 200px;
+}
