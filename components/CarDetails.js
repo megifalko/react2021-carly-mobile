@@ -45,22 +45,21 @@ function CarDetails({ route, navigation }) {
   console.log(imageList);
   return (
     <View style={styles.container}>
-      <View style={{ flex: 1 / 4, flexDirection: "row" }}>
-        <View style={{ flex: 1 / 2 }}>
-          <Text>Brand</Text>
-          <Text>{item.brand}</Text>
+      <View style={{ flex: 1 / 3, flexDirection: "row", marginBottom: 10 }}>
+        <View style={{ flex: 1 / 2}}>
+          <Text style={styles.content}>Brand</Text>
+          <Text style={styles.header}>{item.brand}</Text>
         </View>
-        <View style={{ flex: 1 / 2 }}>
-        </View>
+        <View style={{ flex: 1 / 2 }}></View>
       </View>
-      <View style={{ flex: 1 / 4, flexDirection: "row" }}>
-        <View style={{ flex: 1 / 2 }}>
-          <Text>Model</Text>
-          <Text>{item.model}</Text>
+      <View style={{ flex: 1 / 3, flexDirection: "row"}}>
+        <View style={{ flex: 2 / 3 }}>
+          <Text style={styles.content}>Model</Text>
+          <Text style={styles.header}>{item.model}</Text>
         </View>
-        <View style={{ flex: 1 / 2, alignItems: "flex-end"}}>
-          <Text>Year</Text>
-          <Text>{item.year}</Text>
+        <View style={{ flex: 1 / 3, alignItems: "flex-end" }}>
+          <Text style={styles.content}>Year</Text>
+          <Text style={styles.year}>{item.year}</Text>
         </View>
       </View>
       <View style={{ flex: 1, marginTop: 20, marginBottom: 30 }}>
@@ -79,16 +78,18 @@ function CarDetails({ route, navigation }) {
           )}
         />
       </View>
-      <View style={{ flex: 1/2, flexDirection: "row" }}>
-        <View style={{ flex: 1 / 2 }}>
-        </View>
-        <View style={{ flex: 1 / 2, alignItems: "flex-end"}}>
-          <Text>Price:     ${item.price}</Text>
-          <Text>/day</Text>
+      <View style={{ flex: 1 / 3, flexDirection: "row", paddingBottom: 30 }}>
+        <View style={{ flex: 1 / 4 }}></View>
+        <View style={{ flex: 3 / 4, alignItems: "flex-end" }}>
+          <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
+            {/* <Text style={styles.price}>Price    </Text> */}
+            <Text style={styles.number}>${item.price}</Text>
+          </View>
+          <Text style={styles.price}>/day</Text>
         </View>
       </View>
     </View>
   );
 }
-//alignItems: "flex-end"
+//alignItems: "center" justifyContent: "center" paddingBottom: 20 alignSelf: "flex-start"
 export { CarDetails };
