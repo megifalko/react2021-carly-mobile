@@ -6,29 +6,114 @@ import {
   FlatList,
   RefreshControl,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from "async-storage";
-import { getBookings, deleteBooking } from '../logic/api'
+import { getBookings, deleteBooking } from "../logic/api";
+import styles from "../styles/BookingList.module.css";
 
 function BookingList({ navigation }) {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [authToken, setAuthToken] = useState('');
+  const [authToken, setAuthToken] = useState("");
   const [page, setPage] = useState(0);
 
   const onDelete = (id) => {
     console.log(id);
     deleteSelectedBooking(id);
   };
-
+  const { width, height } = Dimensions.get("window");
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Text style={styles.content}>First name: {item.customerFirstName}</Text>
-      <Text style={styles.content}>Last name: {item.customerLastName}</Text>
-      <Text style={styles.content}>Start date: {item.startDate}</Text>
-      <Text style={styles.content}>End date: {item.endDate}</Text>
-      <Button title="Delete" onPress={() => onDelete(item.id)} />
+      <View style={{ flex: 1, alignItems: "flex-start" }}>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              flex: 1 / 2,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.content}>Booked by:</Text>
+          </View>
+          <View
+            style={{
+              flex: 1 / 2,
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.header}>
+              {item.customerFirstName + " " + item.customerLastName}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              flex: 1 / 2,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.content}>From:</Text>
+          </View>
+          <View
+            style={{
+              flex: 1 / 2,
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.header}>
+            {(new Date(Date.parse(item.startDate))).toLocaleDateString()}
+            </Text>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+          }}
+        >
+          <View
+            style={{
+              flex: 1 / 2,
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.content}>To:</Text>
+          </View>
+          <View
+            style={{
+              flex: 1 / 2,
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Text style={styles.header}>
+            {item.endDate ? (new Date(Date.parse(item.endDate))).toLocaleDateString() : "-"}
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        style={styles.button}
+        title="Delete"
+        onPress={() => onDelete(item.id)}
+      >
+        <Text style={styles["button-text"]}>Cancel</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -38,13 +123,11 @@ function BookingList({ navigation }) {
     loadData(authToken);
   }, [isLoading]);
 
-  
-
   const loadData = async (token) => {
     setIsLoading(true);
     getBookings(token, 0)
       .then((response) => {
-        //console.log(response);
+        console.log(response);
         setBookings(response.data);
       })
       .catch((err) => console.error(JSON.stringify(err)))
@@ -56,7 +139,7 @@ function BookingList({ navigation }) {
 
   const appendData = async (token) => {
     setIsLoading(true);
-    getBookings(token, page+1)
+    getBookings(token, page + 1)
       .then((response) => {
         //console.log(response);
         setBookings([...bookings, ...response.data]);
@@ -66,7 +149,7 @@ function BookingList({ navigation }) {
         //console.log("yay!");
         setIsLoading(false);
       });
-    setPage(page+1)
+    setPage(page + 1);
   };
 
   const deleteSelectedBooking = async (id) => {
@@ -90,9 +173,7 @@ function BookingList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.content}>Booking list:</Text>
       <FlatList
-        style={{ flex: 1 }}
         refreshControl={
           <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
         }
@@ -101,33 +182,10 @@ function BookingList({ navigation }) {
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0}
         onEndReached={() => appendData(authToken)}
+        contentContainerStyle={styles.list}
       />
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "flex-start",
-  },
-  content: {
-    margin: 20,
-    fontSize: 18,
-    alignSelf: "center",
-  },
-  item: {
-    flex: 1,
-    alignSelf: "stretch",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 10,
-    padding: 10,
-    height: 300,
-    backgroundColor: "#AEF359",
-    width: "90%",
-    borderRadius: 5,
-  },
-});
 
 export { BookingList };
