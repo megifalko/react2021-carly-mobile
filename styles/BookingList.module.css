@@ -32,7 +32,7 @@
   margin: 15px;
   border-radius: 30px;
   width: 350px;
-  height: 350px;
+  height: 500px;
 }
 
 .button {
@@ -49,4 +49,9 @@
 .button-text {
   color: #fff;
   font-size: 20px;
+}
+
+.image {
+  height: 150px;
+  margin-top: 20px;
 }
