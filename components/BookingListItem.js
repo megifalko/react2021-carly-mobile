@@ -63,7 +63,10 @@ function BookingListItem({ item, onRefresh, setIsLoading }) {
             }}
           >
             <Text style={styles.header}>
-              {item.customerFirstName + " " + item.customerLastName}
+              {item.customerFirstName }
+            </Text>
+            <Text style={styles.header}>
+              {item.customerLastName }
             </Text>
           </View>
         </View>
