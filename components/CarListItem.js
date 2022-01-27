@@ -15,7 +15,7 @@ function CarListItem({ item }) {
                     setImgSource(BASE_URL + '/images/' + data[0]);
                 }
             })
-            .catch(err => console.log(err));
+            .catch(err => console.error(JSON.stringify(err)));
     }, []);
 
     return (

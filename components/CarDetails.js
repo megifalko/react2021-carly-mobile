@@ -13,10 +13,8 @@ import styles from "../styles/CarDetails.module.css";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 function CarDetails({ route, navigation }) {
-  //const [imgSource, setImgSource] = useState("https://placekitten.com/300/200");
   const [imgSources, setImgSources] = useState([]);
   const item = route.params.item;
-  console.log(item);
 
   useEffect(async () => {
     LogBox.ignoreLogs(["Animated: `useNativeDriver`"]);
@@ -26,23 +24,18 @@ function CarDetails({ route, navigation }) {
         if (data.length > 0) {
           let list = [];
           data.forEach((item) => {
-            list.push("http://10.0.2.2:8080/images/" + item);
-            console.log(item);
+            list.push(BASE_URL + "/images/" + item);
           });
-          console.log(list);
           setImgSources(list);
-          //setImgSource("http://10.0.2.2:8080/images/" + data[0]);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(JSON.stringify(err)));
   }, []);
-  //{ id: '1', image: IMAGES.image1 }
+
   const imageList = imgSources.map((image) => {
-    console.log({ id: "image", image: image });
     return { id: "image", image: image };
   });
   const { width, height } = Dimensions.get("window");
-  console.log(imageList);
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 / 3, flexDirection: "row", marginBottom: 10 }}>
@@ -82,7 +75,6 @@ function CarDetails({ route, navigation }) {
         <View style={{ flex: 1 / 4 }}></View>
         <View style={{ flex: 3 / 4, alignItems: "flex-end" }}>
           <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-            {/* <Text style={styles.price}>Price    </Text> */}
             <Text style={styles.number}>${item.price}</Text>
           </View>
           <Text style={styles.price}>/day</Text>
@@ -91,5 +83,4 @@ function CarDetails({ route, navigation }) {
     </View>
   );
 }
-//alignItems: "center" justifyContent: "center" paddingBottom: 20 alignSelf: "flex-start"
 export { CarDetails };

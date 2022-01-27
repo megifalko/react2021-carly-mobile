@@ -21,7 +21,6 @@ function BookingList() {
     setIsLoading(true);
     getBookings(token, 0)
       .then((response) => {
-        console.log(response);
         setBookings(response.data);
       })
       .catch((err) => console.error(JSON.stringify(err)))

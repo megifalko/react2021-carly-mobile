@@ -20,11 +20,10 @@ function BookingListItem({ item, onRefresh, setIsLoading }) {
           setImgSource(BASE_URL + "/images/" + data[0]);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.error(JSON.stringify(err)));
   }, []);
 
   const onDelete = async (id) => {
-    console.log(id);
     await deleteSelectedBooking(id);
     onRefresh();
   };
@@ -35,10 +34,7 @@ function BookingListItem({ item, onRefresh, setIsLoading }) {
       .then((response) => {
         console.log(JSON.stringify(response));
       })
-      .catch((err) => console.error(err))
-      .finally(() => {
-        console.log("yay!");
-      });
+      .catch((err) => console.error(JSON.stringify(err)));
   };
 
   return (

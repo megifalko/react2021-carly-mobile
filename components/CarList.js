@@ -38,12 +38,10 @@ function CarList({ navigation }) {
       searchText != undefined && searchText.length >= 3 ? searchText : undefined
     )
       .then((response) => {
-        //console.log(response);
         setCars(response.data);
       })
       .catch((err) => console.error(JSON.stringify(err)))
       .finally(() => {
-        //console.log("yay!");
         setIsLoading(false);
       });
   };
@@ -56,12 +54,10 @@ function CarList({ navigation }) {
       searchText != undefined && searchText.length >= 3 ? searchText : undefined
     )
       .then((response) => {
-        //console.log(response);
         setCars([...cars, ...response.data]);
       })
       .catch((err) => console.error(JSON.stringify(err)))
       .finally(() => {
-        //console.log("yay!");
         setIsLoading(false);
       });
     setPage(page + 1);

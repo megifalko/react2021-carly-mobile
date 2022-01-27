@@ -37,11 +37,10 @@ function LoginPage({navigation}) {
         onPress={() => {
             login(username, password)
                 .then(response => {
-                    console.log(response.jwttoken)
                     saveToken(response.jwttoken)
                         .then(() => navigation.navigate('Home'))
                 })
-                .catch(err => console.error(err));
+                .catch(err => console.error(JSON.stringify(err)));
         }}
       >
         <Text style={styles['login-text']}>Login</Text>
