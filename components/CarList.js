@@ -24,10 +24,10 @@ function CarList({ navigation }) {
     navigation.navigate("CarDetailsScreen", { item });
   };
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = useCallback(async (search = searchText) => {
     setCars([]);
     setPage(0);
-    loadData(authToken, searchText);
+    loadData(authToken, search);
   }, [isLoading]);
 
   const loadData = async (token, searchText) => {
@@ -71,7 +71,9 @@ function CarList({ navigation }) {
 
   const onSearchInput = (value) => {
     setSearchText(value);
-    if (value.length > 3 || value === "") onRefresh();
+    if (value.length >= 3 || value === "") {
+      onRefresh(value);
+    }
   };
 
   return (

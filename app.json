@@ -30,7 +30,13 @@
     },
     "packagerOpts": {
       "config": "metro.config.js",
-      "sourceExts": ["js", "jsx", "css"]
-    }
+      "sourceExts": [
+        "js",
+        "jsx",
+        "css"
+      ]
+    },
+    "description": "",
+    "githubUrl": "https://github.com/dvalim/react2021-carly-mobile"
   }
 }

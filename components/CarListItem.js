@@ -16,6 +16,9 @@ function CarListItem({ item }) {
                 }
             })
             .catch(err => console.error(JSON.stringify(err)));
+        return () => { // suppress warning
+            setImgSource(''); 
+        };
     }, []);
 
     return (

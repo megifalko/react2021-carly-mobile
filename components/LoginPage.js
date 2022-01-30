@@ -29,6 +29,7 @@ function LoginPage({navigation}) {
       <TextInput
         style={styles.input}
         onChangeText={setPassword}
+        secureTextEntry={true}
         value={password}
         placeholder="password"
       />

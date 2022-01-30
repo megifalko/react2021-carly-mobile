@@ -21,6 +21,9 @@ function BookingListItem({ item, onRefresh, setIsLoading }) {
         }
       })
       .catch((err) => console.error(JSON.stringify(err)));
+    return () => { // suppress warning
+      setImgSource(''); 
+    };
   }, []);
 
   const onDelete = async (id) => {

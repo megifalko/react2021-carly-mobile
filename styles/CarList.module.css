@@ -29,7 +29,7 @@
 .search-icon {
     position: absolute;
     top: 35px;
-    left: 340px;
+    right: 35px;
     font-size: 20px;
     color: #777;
 } 
