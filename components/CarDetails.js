@@ -71,8 +71,13 @@ function CarDetails({ route, navigation }) {
           )}
         />
       </View>
+      <View style={{ flex: 1 / 3, flexDirection: "column" }}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.content}>Location</Text>
+          <Text style={styles.location}>{item.location}</Text>
+        </View>
+      </View>
       <View style={{ flex: 1 / 3, flexDirection: "row", paddingBottom: 30 }}>
-        <View style={{ flex: 1 / 4 }}></View>
         <View style={{ flex: 3 / 4, alignItems: "flex-end" }}>
           <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
             <Text style={styles.number}>${item.price}</Text>
